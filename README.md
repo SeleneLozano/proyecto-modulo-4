@@ -55,5 +55,14 @@ Durante las siguientes versiones se desarrollarán:
 - JSON.stringify()
 - JSON.parse()
 - STORAGE_KEYS
+- AuthService
+- registro
+- login
+- logout
+- sesión
+- SweetAlert2
+- DOM
+- eventos
+- dashboard.html
 ## Versión actual
-v0.5.0 — Persistencia con LocalStorage y StorageService.
+v0.6.0 — Registro, autenticación, sesión y SweetAlert2.

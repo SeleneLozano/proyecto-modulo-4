@@ -3,21 +3,10 @@ RESETEO GENERAL
 Aplicamos estas propiedades a todos los elementos de la página
 ========================================= */
 * {
-/* Hace que padding y border formen parte del tamaño total del elemento */
 box-sizing: border-box;
-/* Eliminamos los márgenes predeterminados del navegador */
 margin: 0;
-/* Eliminamos los espacios internos predeterminados */
 padding: 0;
 }
-/* =========================================
-CONFIGURACIÓN GENERAL DE LA PÁGINA
-========================================= */
-/* La página tendrá como mínimo la altura completa de la ventana del navegador
-*/
-/* Definimos las fuentes principales utilizadas por la aplicación */
-/* Color de fondo general */
-/* Color principal del texto */
 body {
 min-height: 100vh;
 font-family: Arial, Helvetica, sans-serif;
@@ -25,37 +14,167 @@ background-color: #f4f6f8;
 color: #1f2937;
 }
 /* =========================================
-CONTENEDOR PRINCIPAL
+AUTENTICACIÓN
 ========================================= */
-/* El contenedor ocupará como mínimo toda la altura de la ventana */
-/* Activamos Flexbox para organizar los elementos internos */
-/* Colocamos los elementos verticalmente con flex-direction*/
-/* Centramos horizontalmente los elementos con aling.-items */
-/* Centramos verticalmente los elementos justify-content */
-/* Espacio entre los elementos internos */
-/* Espacio interno del contenedor */
-/* Centramos el contenido de texto */
-.app {
+.auth-page {
 min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 16px;
-padding: 24px;
+padding: 48px 24px;
+}
+.auth-header {
+max-width: 900px;
+margin:
+0 auto
+32px;
 text-align: center;
 }
-/* =========================================
-TÍTULO PRINCIPAL
-========================================= */
-/* Tamaño del título principal */
-.app h1 {
+.auth-header h1 {
+margin-bottom: 12px;
 font-size: 2rem;
 }
-/* =========================================
-PÁRRAFOS
-========================================= */
-/* Tamaño del texto informativo */
-.app p {
+.auth-header p {
+margin-bottom: 8px;
+color:
+#6b7280;
+}
+.auth-header span {
+font-size: 0.9rem;
+color:
+#6b7280;
+}
+.auth-container {
+width: min(
+900px,
+100%
+);
+margin: 0 auto;
+display: grid;
+grid-template-columns:
+repeat(
+2,
+minmax(0, 1fr)
+);
+gap: 24px;
+}
+.auth-card {
+padding: 28px;
+background-color:
+#ffffff;
+border-radius: 12px;
+box-shadow:
+0 10px 30px
+rgba(
+0,
+0,
+0,
+0.08
+);
+}
+.auth-card h2 {
+margin-bottom: 24px;
+}
+.form-group {
+margin-bottom: 18px;
+}
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-weight: 600;
+}
+.form-group input {
+width: 100%;
+padding:
+12px 14px;
+border:
+1px solid
+#d1d5db;
+border-radius:
+8px;
 font-size: 1rem;
+}
+.form-group input:focus {
+outline:
+2px solid
+#2563eb;
+border-color:
+transparent;
+}
+.btn {
+display:
+inline-flex;
+align-items:
+center;
+justify-content:
+center;
+min-height:
+44px;
+padding:
+10px 18px;
+border:
+none;
+border-radius:
+8px;
+cursor:
+pointer;
+font-size:
+1rem;
+font-weight:
+600;
+}
+.btn-primary {
+background-color:
+#2563eb;
+color:
+#ffffff;
+}
+.btn-primary:hover {
+background-color:
+#1d4ed8;
+}
+/* =========================================
+RESPONSIVE
+========================================= */
+@media (
+max-width: 768px
+) {
+.auth-container {
+grid-template-columns:
+1fr;
+}
+.auth-page {
+padding:
+32px 16px;
+}
+}
+
+/* =========================================
+DASHBOARD SIMPLE
+========================================= */
+.dashboard-page {
+min-height: 100vh;
+background-color: #f4f6f8;
+}
+/* =========================================
+CONTENEDOR DASHBOARD
+========================================= */
+.dashboard-simple {
+width: min(900px, 90%);
+margin: 60px auto;
+padding: 32px;
+background-color: #ffffff;
+border-radius: 12px;
+box-shadow:
+0 10px 30px
+rgba(0, 0, 0, 0.08);
+}
+/* =========================================
+TÍTULO DASHBOARD
+========================================= */
+.dashboard-simple h1 {
+margin-bottom: 16px;
+}
+/* =========================================
+PÁRRAFOS DASHBOARD
+========================================= */
+.dashboard-simple p {
+margin-bottom: 24px;
 }
