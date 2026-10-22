@@ -49,5 +49,11 @@ Durante las siguientes versiones se desarrollarán:
 - registrarMovimiento()
 - obtenerMovimientosDeCuenta()
 - realizarDeposito()
+## Services
+- StorageService.js
+- LocalStorage
+- JSON.stringify()
+- JSON.parse()
+- STORAGE_KEYS
 ## Versión actual
-v0.4.0 — Modelo Banco y reglas del dominio bancario.
+v0.5.0 — Persistencia con LocalStorage y StorageService.
