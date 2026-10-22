@@ -36,4 +36,4 @@ Durante las siguientes versiones se desarrollarán:
 - Pruebas automatizadas con Jest.
 - Git y GitHub.
 ## Versión actual
-v0.1.0 — Estructura inicial del proyecto.
+v0.2.0 — Arquitectura modular y utilidades base.
