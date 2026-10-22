@@ -1,32 +1,38 @@
-<!-- =========================================
-DASHBOARD
-========================================== -->
-<body class="dashboard-page">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Sistema de Gestión Bancaria</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
 
-<!-- =========================================
-CONTENIDO PRINCIPAL
-========================================== -->
-<main class="dashboard-simple">
-<h1>Dashboard</h1>
-<!-- DashboardUI.js modificará este contenido. -->
-<p id="nombreUsuario"></p>
-<p>
-La sesión se encuentra
-activa correctamente.
-</p>
-<button type="button" id="logoutBtn" class="btn btn-primary">
-Cerrar sesión
-</button>
-<script
-src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-</script>
-<!-- =========================================
-V6 JAVASCRIPT DASHBOARD
-========================================== -->
-<script
-type="module"
-src="./js/ui/DashboardUI.js"
-></script>
-</main>
+<body class="app-dashboard">
+  <!-- BARRA SUPERIOR -->
+  <header class="topbar">
+    <div>
+      <h1>Banco Digital</h1>
+      <p>Sistema de Gestión Bancaria</p>
+    </div>
+    <button type="button" id="logoutBtn" class="btn btn-primary">
+      Cerrar sesión
+    </button>
+  </header>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="dashboard-nav">
+    <a href="dashboard.html" class="active">Dashboard</a>
+    <a href="cuenta.html">Mi cuenta</a>
+    <a href="movimientos.html">Movimientos</a>
+    <a href="transferencia.html">Transferencias</a>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL DONDE SE RENDERIZARÁ LA INFORMACIÓN -->
+  <main class="dashboard-content" id="dashboardRoot">
+    <!-- DashboardUI.js inyectará aquí el contenido dinámico -->
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="./js/ui/DashboardUI.js"></script>
 </body>
-
+</html>

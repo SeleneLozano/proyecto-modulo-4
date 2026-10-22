@@ -19,6 +19,7 @@ El proyecto utilizará las siguientes capas:
 - UI
 - Utils
 - Tests
+- BancoService
 ## Funcionalidades previstas
 Durante las siguientes versiones se desarrollarán:
 - Registro de usuarios.
@@ -39,7 +40,7 @@ Durante las siguientes versiones se desarrollarán:
 - Usuario
 - Cuenta
 - Movimiento
-## Nuevo Modelo: Banco
+## Banco
 - agregarUsuario()
 - buscarUsuarioPorId()
 - agregarCuenta()
@@ -64,5 +65,10 @@ Durante las siguientes versiones se desarrollarán:
 - DOM
 - eventos
 - dashboard.html
+## Dashboard
+- consume información bancaria
+- muestra saldo
+- muestra cuentas
+- muestra movimientos
 ## Versión actual
-v0.6.0 — Registro, autenticación, sesión y SweetAlert2.
+v0.7.0 — BancoService y Dashboard bancario.
