@@ -1,5 +1,5 @@
 /* =========================================
-IMPORTAR VALIDADORES, HELPERS Y FORMATEADORES
+V.01 IMPORTAR VALIDADORES, HELPERS Y FORMATEADORES
 ========================================= */
 // Importamos las funciones encargadas de validar información.
 import {
@@ -16,6 +16,54 @@ import {
 formatDate,
 formatAccountNumber,
 } from './utils/formatters.js';
+
+/* =========================================
+V.2 IMPORTAR MODELO USUARIO
+IMPORTAR MODELO CUENTA
+IMPORTAR MODELO MOVIMIENTO
+========================================= */
+import { Usuario } from './models/Usuario.js';
+import { Cuenta } from './models/Cuenta.js';
+import { Movimiento } from './models/Movimiento.js';
+
+/* ==========================================
+USUARIO
+========================================== */
+/* V.2 Creamos nuestra primera instancia de la clase Usuario. */
+const usuarioDemo = new Usuario({
+nombre: 'Juan Suarez',
+email: 'juan@correo.com',
+telefono: '5512345678',
+password: '123456',
+});
+
+/* ==========================================
+CUENTA
+V.2 Creamos una cuenta y la asociamos al usuario utilizando su ID
+========================================== */
+const cuentaDemo = new Cuenta({
+numeroCuenta: '123456789012',
+usuarioId: usuarioDemo.id,
+});
+/* ==========================================
+DEPÓSITO DE DEMOSTRACIÓN
+V.2 Utilizamos el método depositar() de nuestra instancia de Cuenta.
+========================================== */
+cuentaDemo.depositar(1000);
+
+/* ==========================================
+MOVIMIENTO
+V.2 Representamos manualmente el depósito mediante una instancia de Movimiento
+========================================== */
+const movimientoDemo = new Movimiento({
+tipo: 'DEPOSITO',
+monto: 1000,
+descripcion: 'Depósito inicial',
+/* Asociamos el movimiento con la cuenta creada. */
+cuentaOrigen: cuentaDemo.id,
+saldoResultante: cuentaDemo.saldo,
+});
+
 /* =========================================
 PUNTO DE ENTRADA DE LA APLICACIÓN
 ========================================= */
@@ -51,3 +99,29 @@ console.log(
 'Número de cuenta:',
 formatAccountNumber('123456789012'),
 );
+
+// Mostramos el usuario creado v0.2.0. 
+console.log(
+'Usuario:',
+usuarioDemo,
+);
+
+/* Mostramos el nuevo saldo utilizando formatCurrency() desarrollado en
+v0.2.0. */
+console.log(
+'Saldo después del depósito:',
+formatCurrency(cuentaDemo.saldo),
+);
+
+// Mostramos la cuenta creada v0.2.0
+console.log(
+'Cuenta:',
+cuentaDemo,
+);
+
+// Mostramos el movimiento creado v0.2.0.
+console.log(
+'Movimiento:',
+movimientoDemo,
+);
+

@@ -35,5 +35,9 @@ Durante las siguientes versiones se desarrollarán:
 - Librerías visuales.
 - Pruebas automatizadas con Jest.
 - Git y GitHub.
+## Modelos del dominio
+- Usuario
+- Cuenta
+- Movimiento
 ## Versión actual
-v0.2.0 — Arquitectura modular y utilidades base.
+v0.3.0 — Modelado del dominio con Programación Orientada a Objetos.
