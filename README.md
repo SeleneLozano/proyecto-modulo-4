@@ -39,5 +39,15 @@ Durante las siguientes versiones se desarrollarán:
 - Usuario
 - Cuenta
 - Movimiento
+## Nuevo Modelo: Banco
+- agregarUsuario()
+- buscarUsuarioPorId()
+- agregarCuenta()
+- buscarCuentaPorId()
+- buscarCuentaPorNumero()
+- obtenerCuentasDeUsuario()
+- registrarMovimiento()
+- obtenerMovimientosDeCuenta()
+- realizarDeposito()
 ## Versión actual
-v0.3.0 — Modelado del dominio con Programación Orientada a Objetos.
+v0.4.0 — Modelo Banco y reglas del dominio bancario.

@@ -1,127 +1,98 @@
 /* =========================================
-V.01 IMPORTAR VALIDADORES, HELPERS Y FORMATEADORES
+   1. IMPORTAR VALIDADORES, HELPERS Y FORMATEADORES
 ========================================= */
-// Importamos las funciones encargadas de validar información.
 import {
-validarCampoObligatorio,
-validarMonto,
+  validarCampoObligatorio,
+  validarMonto,
 } from './utils/validators.js';
-// Importamos nuestra función auxiliar encargada de generar identificadores.
+
 import {
-generarId,
+  generarId,
 } from './utils/helpers.js';
-// Importamos las funciones utilizadas para preparar los datos antes de mostrarlos al usuario.
+
 import {
-    formatCurrency,
-formatDate,
-formatAccountNumber,
+  formatCurrency,
+  formatDate,
+  formatAccountNumber,
 } from './utils/formatters.js';
 
 /* =========================================
-V.2 IMPORTAR MODELO USUARIO
-IMPORTAR MODELO CUENTA
-IMPORTAR MODELO MOVIMIENTO
+   2. IMPORTAR MODELOS
 ========================================= */
 import { Usuario } from './models/Usuario.js';
 import { Cuenta } from './models/Cuenta.js';
-import { Movimiento } from './models/Movimiento.js';
-
-/* ==========================================
-USUARIO
-========================================== */
-/* V.2 Creamos nuestra primera instancia de la clase Usuario. */
-const usuarioDemo = new Usuario({
-nombre: 'Juan Suarez',
-email: 'juan@correo.com',
-telefono: '5512345678',
-password: '123456',
-});
-
-/* ==========================================
-CUENTA
-V.2 Creamos una cuenta y la asociamos al usuario utilizando su ID
-========================================== */
-const cuentaDemo = new Cuenta({
-numeroCuenta: '123456789012',
-usuarioId: usuarioDemo.id,
-});
-/* ==========================================
-DEPÓSITO DE DEMOSTRACIÓN
-V.2 Utilizamos el método depositar() de nuestra instancia de Cuenta.
-========================================== */
-cuentaDemo.depositar(1000);
-
-/* ==========================================
-MOVIMIENTO
-V.2 Representamos manualmente el depósito mediante una instancia de Movimiento
-========================================== */
-const movimientoDemo = new Movimiento({
-tipo: 'DEPOSITO',
-monto: 1000,
-descripcion: 'Depósito inicial',
-/* Asociamos el movimiento con la cuenta creada. */
-cuentaOrigen: cuentaDemo.id,
-saldoResultante: cuentaDemo.saldo,
-});
+import { Banco } from './models/Banco.js';
 
 /* =========================================
-PUNTO DE ENTRADA DE LA APLICACIÓN
+   3. INICIALIZACIÓN Y CONFIGURACIÓN DEMO
 ========================================= */
-// Mostramos la versión actual del proyecto
-console.log('Sistema de Gestión Bancaria - v0.2.0');
-// Validación de campo debe mostrar true
-console.log(
-'Campo obligatorio:',
-validarCampoObligatorio('Banco Digital'),
-);
-// Probar validación del monto debe regresar True
-console.log(
-'Monto válido:',
-validarMonto(1000),
-);
-// Generamos un identificador dinámico
-console.log(
-'ID generado:',
-generarId(),
-);
-// Convertimos 1500 a formato monetario MXN
-console.log(
-'Monto formateado:',
-formatCurrency(1500),
-);
-// Formateamos la fecha actual
-console.log(
-'Fecha formateada:',
-formatDate(new Date()),
-);
-// Separamos visualmente cada cuatro dígitos
-console.log(
-'Número de cuenta:',
-formatAccountNumber('123456789012'),
-);
+// Instancia del Banco
+const bancoDemo = new Banco();
 
-// Mostramos el usuario creado v0.2.0. 
-console.log(
-'Usuario:',
-usuarioDemo,
-);
+// Instancia de Usuario
+const usuarioDemo = new Usuario({
+  nombre: 'Juan Suarez',
+  email: 'juan@correo.com',
+  telefono: '5512345678',
+  password: '123456',
+});
 
-/* Mostramos el nuevo saldo utilizando formatCurrency() desarrollado en
-v0.2.0. */
-console.log(
-'Saldo después del depósito:',
-formatCurrency(cuentaDemo.saldo),
-);
+bancoDemo.agregarUsuario(usuarioDemo);
 
-// Mostramos la cuenta creada v0.2.0
-console.log(
-'Cuenta:',
-cuentaDemo,
-);
+// Instancia de Cuenta
+const cuentaDemo = new Cuenta({
+  numeroCuenta: '123456789012',
+  usuarioId: usuarioDemo.id,
+});
 
-// Mostramos el movimiento creado v0.2.0.
-console.log(
-'Movimiento:',
-movimientoDemo,
-);
+bancoDemo.agregarCuenta(cuentaDemo);
 
+// Operación de Depósito desde Banco
+const depositoDemo = bancoDemo.realizarDeposito({
+  cuentaId: cuentaDemo.id,
+  monto: 1000,
+  descripcion: 'Depósito inicial',
+});
+
+// Obtener cuentas del usuario
+const cuentasUsuario = bancoDemo.obtenerCuentasDeUsuario(usuarioDemo.id);
+
+/* =========================================
+   4. LOGS Y PRUEBAS DEL SISTEMA (v0.4.0)
+========================================= */
+// Mensaje inicial de versión
+console.log('Sistema de Gestión Bancaria - v0.4.0');
+
+// Pruebas de validación, id y formateo
+console.log('Campo obligatorio:', validarCampoObligatorio('Banco Digital'));
+console.log('Monto válido:', validarMonto(1000));
+console.log('ID generado:', generarId());
+console.log('Monto formateado:', formatCurrency(1500));
+console.log('Fecha formateada:', formatDate(new Date()));
+console.log('Número de cuenta:', formatAccountNumber('123456789012'));
+
+// Usuarios y Cuentas registradas en el banco
+console.log('Usuarios registrados:', bancoDemo.usuarios);
+console.log('Cuentas registradas:', bancoDemo.cuentas);
+
+// Saldo actual formateado
+console.log('Saldo actual:', formatCurrency(cuentaDemo.saldo));
+
+// Operaciones e Historial
+console.log('Movimiento generado:', depositoDemo);
+console.log('Movimientos registrados:', bancoDemo.movimientos);
+
+// Búsquedas y filtros
+const usuarioEncontrado = bancoDemo.buscarUsuarioPorId(usuarioDemo.id);
+console.log('Usuario encontrado:', usuarioEncontrado);
+console.log('Cuentas del usuario:', cuentasUsuario);
+
+// Prueba de Regla Negativa (Error controlado por monto inválido)
+try {
+  bancoDemo.realizarDeposito({
+    cuentaId: cuentaDemo.id,
+    monto: -500,
+  });
+} catch (error) {
+  console.log('Error controlado:', error.message);
+}
