@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- =====================================
+     CONFIGURACIÓN GENERAL
+  ====================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta | Sistema de Gestión Bancaria</title>
+
+  <!-- ESTILOS PRINCIPALES -->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body class="app-cuenta">
+  <!-- =====================================
+     CABECERA PRINCIPAL
+  ====================================== -->
+  <header class="topbar">
+    <div>
+      <h1>Banco Digital</h1>
+      <p>Sistema de Gestión Bancaria</p>
+    </div>
+
+    <button
+      type="button"
+      id="logoutBtn"
+      class="btn btn-secondary"
+    >
+      Cerrar sesión
+    </button>
+  </header>
+
+  <!-- =====================================
+     NAVEGACIÓN PRINCIPAL
+  ====================================== -->
+  <nav class="dashboard-nav">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="cuenta.html" class="active">Mi cuenta</a>
+    <a href="movimientos.html">Movimientos</a>
+    <a href="transferencia.html">Transferencias</a>
+  </nav>
+
+  <!-- =====================================
+     CONTENIDO DINÁMICO
+  ====================================== -->
+  <main
+    class="cuenta-content"
+    id="cuentaRoot"
+  ></main>
+
+  <!-- =====================================
+     LIBRERÍAS Y MÓDULOS DE JAVASCRIPT
+  ====================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script type="module" src="./js/ui/CuentaUI.js"></script>
+</body>
+</html>

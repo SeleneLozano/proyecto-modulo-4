@@ -1,7 +1,12 @@
 /* =========================================
-   CLAVES DE ALMACENAMIENTO
-   Centralizamos los nombres de todas las claves utilizadas por LocalStorage.
-   ========================================= */
+   STORAGE SERVICE
+========================================= */
+
+/*
+Centralizamos las claves que usaremos en LocalStorage.
+Esto nos evita errores tipográficos y facilita mantener 
+las claves sincronizadas en todo el proyecto.
+*/
 export const STORAGE_KEYS = {
   USUARIOS: 'usuarios',
   CUENTAS: 'cuentas',
@@ -9,63 +14,89 @@ export const STORAGE_KEYS = {
   SESION: 'sesion',
 };
 
-/* Esta clase centraliza toda la comunicación con LocalStorage. */
+/* =========================================
+   CLASE STORAGE SERVICE
+========================================= */
+
+/*
+Funciona como wrapper o intermediario con LocalStorage.
+Encapsula la conversión de JSON (stringify/parse) para
+que el resto de la aplicación maneje objetos directos de JS.
+*/
 class StorageService {
   /* =========================================
      GUARDAR INFORMACIÓN
-     Recibe: 
-       clave → dónde guardaremos la información.
-       valor → dato que queremos almacenar.
-     ========================================= */
+  ========================================= */
+  
+  /* Convierte la estructura a JSON y la persiste en el navegador */
   guardar(clave, valor) {
-    const valorJSON = JSON.stringify(valor);
-    /* Guardamos el JSON utilizando la clave recibida. */
-    localStorage.setItem(clave, valorJSON);
+    localStorage.setItem(clave, JSON.stringify(valor));
+    return valor;
   }
 
   /* =========================================
      OBTENER INFORMACIÓN
-     clave: indica qué información queremos recuperar.
-     valorPorDefecto: será retornado cuando no exista información almacenada.
-     ========================================= */
-  obtener(clave, valorPorDefecto = null) {
-    /* getItem() devuelve el contenido almacenado como texto. Si la clave no existe devuelve null. */
-    const valor = localStorage.getItem(clave);
+  ========================================= */
 
-    // VALIDAR SI EXISTE INFORMACIÓN
-    if (valor === null) {
+  /*
+    Recupera y parsea los datos. Si la clave no existe o si el
+    contenido guardado está corrupto, retorna de forma segura el valor por defecto.
+  */
+  obtener(clave, valorPorDefecto = null) {
+    const contenido = localStorage.getItem(clave);
+
+    if (contenido === null) {
       return valorPorDefecto;
     }
 
-    // CONVERTIR JSON
     try {
-      return JSON.parse(valor);
-    } catch (error) {
-      // Si el JSON almacenado es inválido, evitamos detener la aplicación.
-      console.error(`No fue posible leer la clave "${clave}" de LocalStorage.`, error);
-      /* Si ocurre un error regresamos el valor predeterminado. */
+      return JSON.parse(contenido);
+    } catch {
+      // Si el JSON está mal formado, evitamos que la app colapse
       return valorPorDefecto;
     }
   }
 
   /* =========================================
-     ELIMINAR INFORMACIÓN
-     Elimina únicamente la clave recibida sin afectar el resto de LocalStorage.
-     ========================================= */
+     ELIMINAR ESTRUCTURAS
+  ========================================= */
+
+  /* Remueve una clave específica sin afectar los demás datos */
   eliminar(clave) {
     localStorage.removeItem(clave);
   }
 
-  /* =========================================
-     LIMPIAR LOCALSTORAGE
-     ========================================= */
+  /* Borra todo el almacenamiento local (útil para un reseteo total) */
   limpiar() {
     localStorage.clear();
+  }
+
+  /* =========================================
+     INICIALIZAR COLECCIONES
+  ========================================= */
+
+  /*
+    Asegura la existencia de las colecciones base del banco (arrays vacíos)
+    para evitar errores de tipo "undefined" o "null" al iniciar la app.
+  */
+  inicializarColecciones() {
+    const coleccionesBase = [
+      STORAGE_KEYS.USUARIOS,
+      STORAGE_KEYS.CUENTAS,
+      STORAGE_KEYS.MOVIMIENTOS,
+    ];
+
+    coleccionesBase.forEach((clave) => {
+      if (this.obtener(clave, null) === null) {
+        this.guardar(clave, []);
+      }
+    });
   }
 }
 
 /* =========================================
-   CREAR INSTANCIA DEL SERVICIO
-   Creamos una sola instancia que podrá reutilizarse desde diferentes módulos.
-   ========================================= */
+   INSTANCIA ÚNICA (SINGLETON)
+========================================= */
+
+/* Exportamos la instancia lista para importar en cualquier módulo */
 export const storageService = new StorageService();

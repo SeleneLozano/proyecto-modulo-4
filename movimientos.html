@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- =====================================
+CONFIGURACIÓN GENERAL
+====================================== -->
+<!-- Codificación de caracteres -->
+<meta charset="UTF-8">
+<!-- Configuración responsive -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Título mostrado en la pestaña -->
+<title>Movimientos | Sistema de Gestión Bancaria</title>
+<!-- Estilos generales de la aplicación -->
+<link rel="stylesheet" href="./css/styles.css">
+<!-- Estilos específicos de la sección de movimientos -->
+<link rel=stylesheet href=./css/movimientos.css>
+</head>
+<body class="app-movimientos">
+<!-- =====================================
+CABECERA
+====================================== -->
+<!-- Cabecera principal del sistema bancario -->
+<header class="topbar">
+<div>
+<h1>Banco Digital</h1>
+<p>Sistema de Gestión Bancaria</p>
+</div>
+<!-- Botón utilizado para cerrar la sesión -->
+<button
+type="button"
+id="logoutBtn"
+class="btn btn-secondary"
+>
+Cerrar sesión
+</button>
+</header>
+<!-- =====================================
+NAVEGACIÓN
+====================================== -->
+<!-- Menú principal de la aplicación -->
+<nav class="dashboard-nav">
+<a href="dashboard.html">
+Dashboard
+</a>
+<a href="cuenta.html">
+Mi cuenta
+</a>
+<!-- Página actualmente seleccionada -->
+<a href="movimientos.html" class="active">
+Movimientos
+</a>
+<a href="transferencia.html">
+Transferencias
+</a>
+</nav>
+<!-- =====================================
+CONTENIDO DINÁMICO
+====================================== -->
+<!--
+MovimientosUI.js utilizará este contenedor
+para mostrar el historial de operaciones
+realizadas por el usuario.
+También se generarán desde JavaScript los
+filtros y controles correspondientes.
+-->
+<main
+class="movimientos-content"
+id="movimientosRoot"
+></main>
+<!-- =====================================
+LIBRERÍAS Y MÓDULO DE LA PÁGINA
+====================================== -->
+<!-- SweetAlert2 para mensajes y confirmaciones -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!--
+Módulo encargado de consultar, procesar
+y representar los movimientos bancarios.
+-->
+<script
+type="module"
+src="./js/ui/MovimientosUI.js"
+></script>
+</body>
+</html>

@@ -1,20 +1,31 @@
 /* =========================================
-   1. IMPORTACIONES
+   DASHBOARD UI
 ========================================= */
+
+/* Servicios necesarios para sesión y datos bancarios */
 import { authService } from '../services/AuthService.js';
 import { bancoService } from '../services/BancoService.js';
-import { formatCurrency, formatAccountNumber } from '../utils/formatters.js';
+
+/* Formateadores utilizados para presentar los datos */
+import {
+  formatCurrency,
+  formatAccountNumber,
+} from '../utils/formatters.js';
 
 /* =========================================
-   2. RENDERIZADO DEL DASHBOARD
+   1. RENDERIZADO DEL DASHBOARD
 ========================================= */
-function renderDashboard(resumen) {
-  const root = document.querySelector('#dashboardRoot');
-  
-  if (!root) {
-    return;
-  }
 
+/*
+  Recibe el resumen generado por BancoService
+  y construye dinámicamente el contenido del Dashboard.
+*/
+function renderDashboard(resumen) {
+  /* Contenedor principal definido en dashboard.html */
+  const root = document.querySelector('#dashboardRoot');
+  if (!root) return;
+
+  /* Extraemos únicamente las propiedades que necesitamos mostrar */
   const {
     usuario,
     cuentas,
@@ -23,23 +34,21 @@ function renderDashboard(resumen) {
     totalMovimientos,
   } = resumen;
 
+  /* Tomamos la primera cuenta como cuenta principal del usuario */
   const cuentaPrincipal = cuentas[0] || null;
 
-  // Renderizado dinámico del contenido HTML
+  /* Inyectamos la plantilla HTML con los datos interpolados */
   root.innerHTML = `
-    <!-- SECCIÓN BIENVENIDA -->
+    <!-- BIENVENIDA -->
     <section class="dashboard-welcome">
       <div>
         <p class="dashboard-label">Bienvenido</p>
         <h2>${usuario.nombre}</h2>
         <p>Consulta el estado actual de tus cuentas.</p>
       </div>
-      <button type="button" id="logoutBtn" class="btn btn-primary">
-        Cerrar sesión
-      </button>
     </section>
 
-    <!-- SECCIÓN RESUMEN BANCARIO -->
+    <!-- RESUMEN GENERAL -->
     <section class="summary-grid">
       <article class="summary-card">
         <span>Saldo total</span>
@@ -55,13 +64,11 @@ function renderDashboard(resumen) {
       </article>
     </section>
 
-    <!-- SECCIÓN DETALLE DE CUENTA PRINCIPAL -->
+    <!-- CUENTA PRINCIPAL -->
     <section class="dashboard-section">
       <header class="section-header">
-        <div>
-          <span>Cuenta principal</span>
-          <h3>Información bancaria</h3>
-        </div>
+        <span>Cuenta principal</span>
+        <h3>Información bancaria</h3>
       </header>
 
       ${
@@ -82,25 +89,22 @@ function renderDashboard(resumen) {
             </div>
           </article>
           `
-          : `
-          <p>No tienes cuentas bancarias registradas.</p>
-          `
+          : '<p>No tienes cuentas bancarias registradas.</p>'
       }
     </section>
   `;
 }
 
 /* =========================================
-   3. GESTIÓN DE CERRAR SESIÓN
+   2. CIERRE DE SESIÓN
 ========================================= */
+
 function initLogout() {
   const btn = document.querySelector('#logoutBtn');
-
-  if (!btn) {
-    return;
-  }
+  if (!btn) return;
 
   btn.addEventListener('click', () => {
+    /* Solicitamos confirmación con SweetAlert2 */
     Swal.fire({
       icon: 'question',
       title: 'Cerrar sesión',
@@ -109,10 +113,9 @@ function initLogout() {
       confirmButtonText: 'Sí, salir',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
-      if (!result.isConfirmed) {
-        return;
-      }
+      if (!result.isConfirmed) return;
 
+      /* Eliminamos la sesión y regresamos al login */
       authService.logout();
       window.location.href = 'index.html';
     });
@@ -120,27 +123,25 @@ function initLogout() {
 }
 
 /* =========================================
-   4. INICIALIZACIÓN DE LA VISTA
+   3. INICIALIZACIÓN DE LA VISTA
 ========================================= */
+
 function init() {
-  const accesoPermitido = authService.protegerRuta();
+  /* Protegemos el Dashboard impidiendo accesos sin sesión */
+  if (!authService.protegerRuta()) return;
 
-  if (!accesoPermitido) {
-    return;
-  }
-
+  /* Recuperamos el usuario autenticado */
   const usuario = authService.getCurrentUser();
-
-  if (!usuario) {
-    return;
-  }
+  if (!usuario) return;
 
   try {
-    // Reconstruir estado desde LocalStorage y consultar datos
+    /* Sincronizamos Banco con LocalStorage */
     bancoService.recargarBanco();
+
+    /* Calculamos el resumen del usuario */
     const resumen = bancoService.obtenerResumenUsuario(usuario.id);
 
-    // Renderizar interfaz y configurar listeners
+    /* Construimos el Dashboard y asociamos eventos */
     renderDashboard(resumen);
     initLogout();
   } catch (error) {
@@ -152,5 +153,10 @@ function init() {
   }
 }
 
-// Ejecutar al cargar el módulo
-init();
+/*
+  Ejecutamos init() únicamente cuando nos
+  encontramos en la vista del Dashboard.
+*/
+if (document.querySelector('.app-dashboard')) {
+  init();
+}

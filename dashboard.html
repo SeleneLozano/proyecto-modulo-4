@@ -1,25 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- =====================================
+     CONFIGURACIÓN GENERAL
+  ====================================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Sistema de Gestión Bancaria</title>
+  <title>Dashboard | Sistema de Gestión Bancaria</title>
+
+  <!-- ESTILOS GENERALES -->
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body class="app-dashboard">
-  <!-- BARRA SUPERIOR -->
+  <!-- =====================================
+     CABECERA PRINCIPAL
+  ====================================== -->
   <header class="topbar">
     <div>
       <h1>Banco Digital</h1>
       <p>Sistema de Gestión Bancaria</p>
     </div>
-    <button type="button" id="logoutBtn" class="btn btn-primary">
+
+    <button
+      type="button"
+      id="logoutBtn"
+      class="btn btn-secondary"
+    >
       Cerrar sesión
     </button>
   </header>
 
-  <!-- NAVEGACIÓN -->
+  <!-- =====================================
+     NAVEGACIÓN PRINCIPAL
+  ====================================== -->
   <nav class="dashboard-nav">
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="cuenta.html">Mi cuenta</a>
@@ -27,11 +41,17 @@
     <a href="transferencia.html">Transferencias</a>
   </nav>
 
-  <!-- CONTENIDO PRINCIPAL DONDE SE RENDERIZARÁ LA INFORMACIÓN -->
-  <main class="dashboard-content" id="dashboardRoot">
-    <!-- DashboardUI.js inyectará aquí el contenido dinámico -->
-  </main>
+  <!-- =====================================
+     CONTENIDO DINÁMICO
+  ====================================== -->
+  <main
+    class="dashboard-content"
+    id="dashboardRoot"
+  ></main>
 
+  <!-- =====================================
+     LIBRERÍAS Y MÓDULO DE LA PÁGINA
+  ====================================== -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="module" src="./js/ui/DashboardUI.js"></script>
 </body>

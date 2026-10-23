@@ -1,10 +1,14 @@
 {
   "name": "proyecto-modulo-4",
-  "version": "0.7.0",
+  "version": "0.10.0",
   "description": "Proyecto integrador Modulo 7 - Sistema de Gestion Bancaria",
   "main": "js/main.js",
-  "scripts": {},
+  "scripts": {"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"},
   "author": "Selene Lozano",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+"jest": "^30.4.2",
+"jest-environment-jsdom": "^30.4.1"
+}
 }

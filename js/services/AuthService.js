@@ -1,155 +1,108 @@
 /* =========================================
-V.6 IMPORTAR STORAGE SERVICE
-AuthService necesita consultar los usuarios registrados y manejar la sesión
-almacenada en LocalStorage.
+   AUTH SERVICE
 ========================================= */
-import {
-STORAGE_KEYS,
-storageService,
-} from './StorageService.js';
+
+/* Importamos la configuración y la instancia singleton del servicio de almacenamiento */
+import { STORAGE_KEYS, storageService } from './StorageService.js';
 
 /* =========================================
-V.6 SERVICIO DE AUTENTICACIÓN
+   CLASE AUTH SERVICE
 ========================================= */
+
+/*
+Administra toda la lógica de autenticación y persistencia de sesión activa.
+Permite iniciar/cerrar sesión, recuperar credenciales del usuario actual
+y restringir accesos a vistas protegidas del sistema.
+*/
 class AuthService {
-/* =========================================
-INICIAR SESIÓN
-Recuperamos todos los usuarios registrados. Si todavía no existe ninguno,
-utilizamos un array vacío.
-========================================= */
-login(email, password) {
-const usuarios =
-storageService.obtener(
-STORAGE_KEYS.USUARIOS,
-[],
-);
-/* =====================================
-NORMALIZAR CORREO
-Convertimos el valor a String, eliminamos espacios y transformamos el
-correo a minúsculas.
-===================================== */
-const emailNormalizado =
-String(email)
-.trim()
-.toLowerCase();
-/* =====================================
-BUSCAR USUARIO
-find() devuelve el primer usuario que cumpla todas estas condiciones:
-- mismo correo - misma contraseña - usuario activo
-===================================== */
-const usuario =
-usuarios.find(
-(u) =>
-u.email.toLowerCase() ===
-emailNormalizado &&
-u.password === password &&
-u.activo !== false,
-);
-/* =====================================
-CREDENCIALES INCORRECTAS
-Si find() no encontró usuario, lanzamos un Error.
-===================================== */
-if (!usuario) {
-throw new Error(
-'Correo o contraseña incorrectos.',
-);
-}
-/* =====================================
-CREAR SESIÓN
-La sesión solamente necesita saber:
-- qué usuario inició sesión - cuándo inició sesión
-===================================== */
-const sesion = {
-usuarioId: usuario.id,
-fechaInicio:
-new Date().toISOString(),
-};
-/* =====================================
-GUARDAR SESIÓN
-===================================== */
-storageService.guardar(
-STORAGE_KEYS.SESION,
-sesion,
-);
-/* =====================================
-DEVOLVER USUARIO
-===================================== */
-return usuario;
+  /* =====================================
+     LOGIN
+  ====================================== */
+
+  /*
+    Procesa las credenciales enviadas por el formulario.
+    Si el correo y la contraseña coinciden con un usuario activo,
+    genera un token o registro de sesión en LocalStorage.
+  */
+  login(email, password) {
+    /* Normalizamos el correo para evitar problemas con mayúsculas o espacios */
+    const emailNormalizado = String(email).trim().toLowerCase();
+
+    /* Consultamos la lista de usuarios registrados */
+    const usuarios = storageService.obtener(STORAGE_KEYS.USUARIOS, []);
+
+    /* Buscamos coincidencia exacta de credenciales y estado activo */
+    const usuario = usuarios.find(
+      (item) =>
+        String(item.email).trim().toLowerCase() === emailNormalizado &&
+        item.password === password &&
+        item.activo !== false,
+    );
+
+    /* Si no se encuentra coincidencia, detenemos el proceso */
+    if (!usuario) {
+      throw new Error('Correo o contraseña incorrectos.');
+    }
+
+    /* Creamos y guardamos la sesión utilizando únicamente el ID como referencia */
+    storageService.guardar(STORAGE_KEYS.SESION, {
+      usuarioId: usuario.id,
+      fechaInicio: new Date().toISOString(),
+    });
+
+    return usuario;
+  }
+
+  /* =====================================
+     LOGOUT
+  ====================================== */
+
+  /* Borra los datos de la clave SESION dejando el sistema desautenticado */
+  logout() {
+    storageService.eliminar(STORAGE_KEYS.SESION);
+    return true;
+  }
+
+  /* =====================================
+     USUARIO ACTUAL
+  ====================================== */
+
+  /* Retorna el objeto del usuario autenticado actualmente en el sistema */
+  getCurrentUser() {
+    const sesion = storageService.obtener(STORAGE_KEYS.SESION, null);
+
+    if (!sesion || !sesion.usuarioId) {
+      return null;
+    }
+
+    const usuarios = storageService.obtener(STORAGE_KEYS.USUARIOS, []);
+
+    /* Retorna el usuario en línea o null si el usuario fue removido */
+    return usuarios.find((u) => u.id === sesion.usuarioId) || null;
+  }
+
+  /* =====================================
+     PROTECCIÓN DE RUTAS
+  ====================================== */
+
+  /*
+    Guarda de navegación: Verifica la existencia de una sesión activa.
+    Si no hay un usuario autenticado, redirige automáticamente a la pantalla de login.
+  */
+  protegerRuta() {
+    const usuario = this.getCurrentUser();
+
+    if (!usuario) {
+      window.location.href = 'index.html';
+      return false;
+    }
+
+    return true;
+  }
 }
 
 /* =========================================
-V.6 CERRAR SESIÓN
-Solamente eliminamos la clave SESION.
+   EXPORTAR INSTANCIA ÚNICA (SINGLETON)
 ========================================= */
-logout() {
-storageService.eliminar(
-STORAGE_KEYS.SESION,
-);
-}
 
-/* =========================================
-V.6 OBTENER USUARIO ACTUAL
-========================================= */
-getCurrentUser() {
-/* =====================================
-RECUPERAR SESIÓN
-Si no existe una sesión, obtenemos null
-===================================== */
-const sesion =
-storageService.obtener(
-STORAGE_KEYS.SESION,
-null,
-);
-/* =====================================
-VALIDAR SESIÓN
-===================================== */
-if (!sesion) {
-return null;
-}
-/* =====================================
-RECUPERAR USUARIOS
-===================================== */
-const usuarios =
-storageService.obtener(
-STORAGE_KEYS.USUARIOS,
-[],
-);
-/* =====================================
-BUSCAR USUARIO DE LA SESIÓN
-Relacionamos: sesion.usuarioId con: usuario.id
-===================================== */
-return (
-usuarios.find(
-(usuario) =>
-usuario.id ===
-sesion.usuarioId,
-) || null
-);
-}
-
-/* =========================================
-PROTEGER RUTA
-========================================= */
-protegerRuta() {
-/* =====================================
-OBTENER USUARIO AUTENTICADO
-===================================== */
-const usuario =
-this.getCurrentUser();
-/* Si no existe usuario autenticado, regresamos a index.html. */
-if (!usuario) {
-window.location.href =
-'index.html';
-return false;
-}
-/* =====================================
-ACCESO PERMITIDO
-===================================== */
-return true;
-}
-}
-/* =========================================
-EXPORTAR AUTH SERVICE
-========================================= */
-export const authService =
-new AuthService();
+export const authService = new AuthService();

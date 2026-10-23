@@ -1,5 +1,5 @@
 /* =========================================
-   1. RESETEO GENERAL
+   1. RESET Y ESTILOS GENERALES
    ========================================= */
 * {
   box-sizing: border-box;
@@ -33,14 +33,17 @@ body {
   font-size: 2rem;
 }
 
+.auth-header p,
+.auth-header span {
+  color: #6b7280;
+}
+
 .auth-header p {
   margin-bottom: 8px;
-  color: #6b7280;
 }
 
 .auth-header span {
   font-size: 0.9rem;
-  color: #6b7280;
 }
 
 .auth-container {
@@ -62,6 +65,9 @@ body {
   margin-bottom: 24px;
 }
 
+/* =========================================
+   3. FORMULARIOS Y CAMPOS DE ENTRADA
+   ========================================= */
 .form-group {
   margin-bottom: 18px;
 }
@@ -72,19 +78,32 @@ body {
   font-weight: 600;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   width: 100%;
   padding: 12px 14px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
+  background-color: #ffffff;
   font-size: 1rem;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus {
   outline: 2px solid #2563eb;
   border-color: transparent;
 }
 
+.field-error {
+  min-height: 18px;
+  margin-top: 6px;
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+/* =========================================
+   4. BOTONES Y ACCIONES
+   ========================================= */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -96,6 +115,7 @@ body {
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
+  transition: background-color 0.2s ease;
 }
 
 .btn-primary {
@@ -107,15 +127,18 @@ body {
   background-color: #1d4ed8;
 }
 
-/* =========================================
-   3. DASHBOARD Y ESTRUCTURA PRINCIPAL
-   ========================================= */
-.app-dashboard {
-  min-height: 100vh;
-  background-color: #f4f6f8;
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
 }
 
-/* Barra superior principal (Topbar) */
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* =========================================
+   5. CABECERA Y NAVEGACIÓN
+   ========================================= */
 .topbar {
   display: flex;
   align-items: center;
@@ -135,7 +158,6 @@ body {
   color: #6b7280;
 }
 
-/* Navegación del Dashboard */
 .dashboard-nav {
   display: flex;
   gap: 12px;
@@ -150,6 +172,7 @@ body {
   color: #374151;
   text-decoration: none;
   border-radius: 8px;
+  white-space: nowrap;
 }
 
 .dashboard-nav a:hover,
@@ -159,8 +182,14 @@ body {
 }
 
 /* =========================================
-   4. CONTENIDO Y SECCIÓN DE BIENVENIDA
+   6. DASHBOARD PRINCIPAL
    ========================================= */
+.app-dashboard,
+.app-cuenta {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
 .dashboard-content {
   width: min(1100px, 92%);
   margin: 32px auto;
@@ -168,15 +197,12 @@ body {
   gap: 24px;
 }
 
-.dashboard-welcome {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+.dashboard-welcome,
+.dashboard-section {
   padding: 28px;
   background-color: #ffffff;
   border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .dashboard-label {
@@ -190,14 +216,13 @@ body {
   font-size: 1.8rem;
 }
 
-.dashboard-welcome p {
+.dashboard-welcome p,
+.section-header span {
   color: #6b7280;
 }
 
-/* =========================================
-   5. TARJETAS DE RESUMEN
-   ========================================= */
-.summary-grid {
+.summary-grid,
+.account-card {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
@@ -213,41 +238,24 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
-.summary-card span {
+.summary-card span,
+.account-card span {
   color: #6b7280;
   font-size: 0.9rem;
 }
 
 .summary-card strong {
   font-size: 1.6rem;
-  color: #111827;
-}
-
-/* =========================================
-   6. INFORMACIÓN DE CUENTA
-   ========================================= */
-.dashboard-section {
-  padding: 28px;
-  background-color: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .section-header {
   margin-bottom: 22px;
 }
 
-.section-header span {
+.section-header span,
+.account-card span {
   display: block;
-  margin-bottom: 5px;
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
-.account-card {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  margin-bottom: 8px;
 }
 
 .account-card div {
@@ -257,42 +265,109 @@ body {
   border-radius: 10px;
 }
 
-.account-card span {
-  display: block;
-  margin-bottom: 8px;
-  color: #6b7280;
-  font-size: 0.85rem;
-}
-
-.account-card strong {
-  font-size: 1.1rem;
-}
-
 /* =========================================
-   7. DASHBOARD SIMPLE
+   7. MI CUENTA Y PERFIL
    ========================================= */
-.dashboard-simple {
-  width: min(900px, 90%);
-  margin: 60px auto;
-  padding: 32px;
+.cuenta-content {
+  width: min(1100px, 92%);
+  margin: 32px auto;
+}
+
+.cuenta-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.4fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.cuenta-card,
+.cuenta-section {
+  padding: 28px;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
-.dashboard-simple h1 {
-  margin-bottom: 16px;
-}
-
-.dashboard-simple p {
+.cuenta-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 24px;
 }
 
+.cuenta-meta {
+  color: #6b7280;
+}
+
+.cuenta-detalle {
+  display: grid;
+  gap: 14px;
+}
+
+.cuenta-detalle p {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cuenta-detalle p:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.cuenta-panel {
+  display: grid;
+  gap: 24px;
+}
+
+.cuenta-section h3 {
+  margin-bottom: 22px;
+}
+
 /* =========================================
-   8. DISEÑO RESPONSIVO
+   8. INDICADORES DE ESTADO (BADGES)
+   ========================================= */
+.badge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* =========================================
+   9. ZONA DE PELIGRO
+   ========================================= */
+.cuenta-section-danger {
+  border: 1px solid #fecaca;
+}
+
+.cuenta-section-danger h3,
+.cuenta-warning {
+  color: #7f1d1d;
+}
+
+.cuenta-warning {
+  margin-bottom: 18px;
+}
+
+/* =========================================
+   10. ADAPTACIÓN RESPONSIVA
    ========================================= */
 @media (max-width: 768px) {
-  .auth-container {
+  .auth-container,
+  .summary-grid,
+  .account-card,
+  .cuenta-layout {
     grid-template-columns: 1fr;
   }
 
@@ -300,12 +375,8 @@ body {
     padding: 32px 16px;
   }
 
-  .summary-grid,
-  .account-card {
-    grid-template-columns: 1fr;
-  }
-
-  .topbar {
+  .topbar,
+  .cuenta-card-header {
     align-items: flex-start;
     flex-direction: column;
   }
