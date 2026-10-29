@@ -490,5 +490,15 @@ function guardarBanco(banco) {
   storageService.guardar(STORAGE_KEYS.CUENTAS, banco.cuentas);
   storageService.guardar(STORAGE_KEYS.MOVIMIENTOS, banco.movimientos);
 }
-
+// Prueba de regla negativa (Monto inválido)
+try {
+  if (cuentaPrincipal) {
+    bancoDemo.realizarDeposito({
+      cuentaId: cuentaPrincipal.id,
+      monto: -500,
+    });
+  }
+} catch (error) {
+  console.log('Error controlado:', error.message);
+}
 
